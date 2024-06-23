@@ -62,6 +62,25 @@ def test_collect_results_with_memory(data):
     print_results_with_memory(results)
     return test_result
 
+
+def do_performance_test_with_memory(base_sample_size, num_test_sets):
+    sample_size = base_sample_size
+    test_t1 = time.time()
+    test_results = []
+
+    for test_iteration in range(1, num_test_sets+1):
+        sample_size *= 2
+        t1 = time.time()
+        print(f"#### test {test_iteration}: sample size {sample_size} ###########################################################")
+        print()
+        test_results.extend(test_collect_results_with_memory(generate_arrays(sample_size)))
+        print(f"Iteration {test_iteration} run time: {time.time()-t1}")
+        print()
+
+    print(f"Total test duration with memory analysis for base sample size {base_sample_size} and doubling every iteration for {num_test_sets} times: {time.time()-test_t1}s")
+    return test_results
+
+
 # NO MEM
 
 def measure_performance(sort_function, data):
@@ -126,22 +145,3 @@ def do_performance_test(base_sample_size, num_test_sets):
 
     print(f"Total test duration for base sample size {base_sample_size} and doubling every iteration for {num_test_sets} times: {time.time()-test_t1}s")
     return test_results
-
-
-def do_performance_test_with_memory(base_sample_size, num_test_sets):
-    sample_size = base_sample_size
-    test_t1 = time.time()
-    test_results = []
-
-    for test_iteration in range(1, num_test_sets+1):
-        sample_size *= 2
-        t1 = time.time()
-        print(f"#### test {test_iteration}: sample size {sample_size} ###########################################################")
-        print()
-        test_results.extend(test_collect_results_with_memory(generate_arrays(sample_size)))
-        print(f"Iteration {test_iteration} run time: {time.time()-t1}")
-        print()
-
-    print(f"Total test duration for base sample size {base_sample_size} and doubling every iteration for {num_test_sets} times: {time.time()-test_t1}s")
-    return test_results
-
