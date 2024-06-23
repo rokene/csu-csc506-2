@@ -1,40 +1,31 @@
 #!/usr/bin/env python3
 
-import time
-from algos import *
+import pandas as pd
+import matplotlib.pyplot as plt
+
 from performance import *
-from test_data import *
 
-def print_results(results):
-  for sort_method, timings in results.items():
-    print(f"Timings for {sort_method}:")
-    for arr_type, time_taken in timings.items():
-        try:
-          print(f"{arr_type} array: {time_taken:.6f} seconds")
-        except Exception:
-          print(f"{arr_type} array: {time_taken}")
-    print()
 
-def test_collect_results(data):
-  results = {}
-  for function in [bubble_sort, insertion_sort, merge_sort, quick_sort, heap_sort]:
-      try:
-        results[function.__name__] = measure_performance(function, data)
-      except Exception as e:
-        results[function.__name__] = {"ERROR": str(e)}
-  return results
+def plot_results(df):
+    fig, ax = plt.subplots(figsize=(10, 6))
+    for name, group in df.groupby(DATA_FIELD_ALGO_NAME):
+        group.groupby(DATA_FIELD_ARRAY_TYPE).plot(x=DATA_FIELD_SIZE, y=DATA_FIELD_TIME, ax=ax, label=f'{name} Time', marker='o')
+    plt.title('Performance of Sorting Algorithms')
+    plt.xlabel('Array Size')
+    plt.ylabel('Time (seconds)')
+    plt.legend(title='Algorithm')
+    plt.grid(True)
+    plt.show()
+
+
+def main():
+  test_results = do_performance_test(50, 10)
+  # test_results = do_performance_test_with_memory(50, 4)
+
+  df = pd.DataFrame(test_results)
+  df.to_csv('sort_performance.csv', index=False)
+  plot_results(df)
+
 
 if __name__ == "__main__":
-  base_sample_size = 50
-  sample_size = base_sample_size
-  num_test_sets = 10
-  test_t1 = time.time()
-  for test_iteration in range(1, num_test_sets+1):
-    sample_size *= 2
-    t1 = time.time()
-    print(f"#### test {test_iteration}: sample size {sample_size} ###########################################################")
-    print()
-    print_results(test_collect_results(generate_arrays(sample_size)))
-    print(f"Iteration {test_iteration} run time: {time.time()-t1}")
-    print()
-  print(f"Total Test Duration: {time.time()-test_t1}s")
+  main()
