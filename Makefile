@@ -11,6 +11,9 @@ MODULE3_CRITICAL_THINKING=$(MODULE3)/critical-thinking
 MODULE5=$(CURRENT_DIR)/module-5
 MODULE5_CRITICAL_THINKING=$(MODULE5)/critical-thinking
 
+MODULE7=$(CURRENT_DIR)/module-7
+MODULE7_CRITICAL_THINKING=$(MODULE7)/critical-thinking
+
 PP=$(CURRENT_DIR)/portfolio-project
 
 .PHONY: help
@@ -34,6 +37,12 @@ m5: ## executes module 5 critical thinking
 	@echo "executing module 5 critical thinking ..."
 	@cd $(MODULE5_CRITICAL_THINKING); ./app.py
 	@echo "completed module 5 critical thinking."
+
+.PHONY: m7
+m7: ## executes module 7 critical thinking
+	@echo "executing module 7 critical thinking ..."
+	@cd $(MODULE7_CRITICAL_THINKING); ./app.py
+	@echo "completed module 7 critical thinking."
 
 .PHONY: pp
 pp: ## executes portfolio project
