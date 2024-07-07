@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import sys
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -19,7 +21,8 @@ def plot_results(df):
 
 
 def main():
-  test_results = do_performance_test(50, 10)
+  sys.setrecursionlimit(70000)
+  test_results = do_performance_test(44864, 4, 1.30)
   # test_results = do_performance_test_with_memory(50, 4)
 
   df = pd.DataFrame(test_results)

@@ -129,13 +129,13 @@ def test_collect_results(data):
   return test_result
 
 
-def do_performance_test(base_sample_size, num_test_sets):
+def do_performance_test(base_sample_size, num_test_sets, iteration_size_factor=2):
     sample_size = base_sample_size
     test_t1 = time.time()
     test_results = []
 
     for test_iteration in range(1, num_test_sets+1):
-        sample_size *= 2
+        sample_size = int(sample_size*iteration_size_factor)
         t1 = time.time()
         print(f"#### test {test_iteration}: sample size {sample_size} ###########################################################")
         print()
